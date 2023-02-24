@@ -8,6 +8,8 @@ networks:
 volumes:
   postgresql-service-volume:
     name: postgresql-service-volume
+  redis-service-volume:
+    name: redis-service-volume
 
 services:
   zookeeper:
@@ -55,7 +57,18 @@ services:
     environment:
       POSTGRES_PASSWORD: postgresqlpwd
       PGDATA: /tmp
-  
+
+  redis_service:
+    image: redis:6.2.6-bullseye
+    container_name: redis-service
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+    volumes:
+      - redis-service-volume:/data
+    command: redis-server --save 60 1 --loglevel warning
+
   location_app:
     image: kamposdiego/location-app:1.0.0
     container_name: location-app
