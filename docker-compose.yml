@@ -1,0 +1,70 @@
+---
+version: '3.5'
+
+networks: 
+  app-network:
+    name: app-network
+
+volumes:
+  postgresql-service-volume:
+    name: postgresql-service-volume
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.0.11
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    networks: 
+      - app-network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  broker:
+    image: confluentinc/cp-kafka:6.0.11
+    container_name: broker
+    ports:
+      - 9092:9092
+    networks: 
+      - app-network
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  config_server:
+    image: kamposdiego/config-server:1.0.0
+    container_name: config-server
+    ports:
+      - 8888:8888
+    networks: 
+      - app-network
+
+  postgresql_service:
+    image: kamposdiego/postgresql-service:1.0.0
+    container_name: postgresql-service
+    ports:
+      - 5432:5432
+    networks: 
+      - app-network
+    volumes:
+      - postgresql-service-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgresqlpwd
+      PGDATA: /tmp
+  
+  location_app:
+    image: kamposdiego/location-app:1.0.0
+    container_name: location-app
+    ports:
+      - 8180:8180
+    networks: 
+      - app-network
+    depends_on:
+      - broker
+      - config_server
+      - postgresql_service
+  
