@@ -80,4 +80,15 @@ services:
       - broker
       - config_server
       - postgresql_service
-  
+
+  cache:
+    image: kamposdiego/location-cache:1.0.0
+    container_name: cache
+    ports:
+      - 8181:8181
+    networks:
+      - app-network
+    depends_on:
+      - broker
+      - config_server
+      - redis_service
