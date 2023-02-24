@@ -93,9 +93,9 @@ services:
       - config_server
       - postgresql_service
 
-  cache:
+  location_cache:
     image: kamposdiego/location-cache:1.0.0
-    container_name: cache
+    container_name: location-cache
     ports:
       - 8181:8181
     networks:
