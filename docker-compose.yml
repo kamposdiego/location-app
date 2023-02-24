@@ -10,6 +10,8 @@ volumes:
     name: postgresql-service-volume
   redis-service-volume:
     name: redis-service-volume
+  mongo-service-volume:
+    name: mongo-service-volume
 
 services:
   zookeeper:
@@ -69,6 +71,16 @@ services:
       - redis-service-volume:/data
     command: redis-server --save 60 1 --loglevel warning
 
+  mongo_service:
+    image: mongo:5.0.5
+    container_name: mongo-service
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+    volumes:
+      - mongo-service-volume:/data/db
+
   location_app:
     image: kamposdiego/location-app:1.0.0
     container_name: location-app
@@ -92,3 +104,16 @@ services:
       - broker
       - config_server
       - redis_service
+
+  location_document:
+    image: kamposdiego/location-document:1.0.0
+    container_name: location-document
+    ports:
+      - 8182:8182
+    networks:
+      - app-network
+    depends_on:
+      - broker
+      - config_server
+      - mongo_service
+
