@@ -1,0 +1,12 @@
+app:
+  version: '@project.version@'
+spring:
+  config:
+    import: optional:configserver:http://config-server:8888
+  activate:
+    on-profile: development
+  application:
+    name: location
+  cloud:
+    config:
+      failFast: true
