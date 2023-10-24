@@ -1,7 +1,5 @@
 package br.com.morsesystems.location.adapter.out.messaging.kafka;
 
-import br.com.morsesystems.location.adapter.out.messaging.kafka.CountryEvent;
-import br.com.morsesystems.location.adapter.out.messaging.kafka.CountrySendMessageKafkaAdapter;
 import br.com.morsesystems.location.domain.Country;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

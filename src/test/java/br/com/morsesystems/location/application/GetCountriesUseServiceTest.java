@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.GetCountriesUseService;
 import br.com.morsesystems.location.application.port.out.GetCountryPort;
 import br.com.morsesystems.location.domain.Country;
 import org.junit.jupiter.api.Test;

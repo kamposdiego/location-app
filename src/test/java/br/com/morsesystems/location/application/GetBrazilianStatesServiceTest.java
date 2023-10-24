@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.GetBrazilianStatesService;
 import br.com.morsesystems.location.application.port.out.GetBrazilianStatePort;
 import br.com.morsesystems.location.domain.BrazilianState;
 import br.com.morsesystems.location.domain.Country;

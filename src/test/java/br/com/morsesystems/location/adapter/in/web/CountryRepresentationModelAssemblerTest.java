@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.adapter.in.web;
 
-import br.com.morsesystems.location.adapter.in.web.CountryRepresentationModelAssembler;
 import br.com.morsesystems.location.domain.Country;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.EntityModel;
