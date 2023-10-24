@@ -1,4 +1,4 @@
-package br.com.morsesystems.location.domain.specification;
+package br.com.morsesystems.location.shared.specification;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

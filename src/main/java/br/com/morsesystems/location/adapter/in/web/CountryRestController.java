@@ -116,7 +116,8 @@ class CountryRestController {
 
     @Operation(
             operationId = "saveCountry",
-            description = "Save a country",
+            summary = "Save a country",
+            description = "This method creates a new country",
             tags = {"Countries"},
             responses = {
                 @ApiResponse(responseCode = "201", description = "Country saved", content = {
@@ -152,7 +153,8 @@ class CountryRestController {
 
     @Operation(
             operationId = "updateCountry",
-            description = "Update a country",
+            summary = "Update a country",
+            description = "This method updates a existing country",
             tags = {"Countries"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "Country updated", content = {
@@ -190,7 +192,8 @@ class CountryRestController {
 
     @Operation(
             operationId = "deleteCountry",
-            description = "Delete a country",
+            summary = "Delete a country",
+            description = "This method delete a country",
             tags = {"Countries"},
             responses = {
                 @ApiResponse(responseCode = "204", description = "Country deleted"),

@@ -117,7 +117,8 @@ class BrazilianStateRestController {
     }
     @Operation(
             operationId = "saveBrazilianState",
-            description = "Save a brazilian state",
+            summary = "Save a brazilian state",
+            description = "This method creates a new brazilian state",
             tags = {"Brazilian States"},
             responses = {
                     @ApiResponse(responseCode = "201", description = "Brazilian state saved", content = {
@@ -152,7 +153,8 @@ class BrazilianStateRestController {
 
     @Operation(
             operationId = "updateBrazilianState",
-            description = "Update a brazilian state",
+            summary = "Update a brazilian state",
+            description = "This method updates a existing brazilian state",
             tags = {"Brazilian States"},
             responses = {
                     @ApiResponse(responseCode = "200", description = "Brazilian state updated", content = {
@@ -184,7 +186,8 @@ class BrazilianStateRestController {
 
     @Operation(
             operationId = "deleteCountry",
-            description = "Delete a brazilian state",
+            summary = "Update a brazilian state",
+            description = "This method delete a brazilian state",
             tags = {"Brazilian States"},
             responses = {
                     @ApiResponse(responseCode = "204", description = "Brazilian state deleted"),

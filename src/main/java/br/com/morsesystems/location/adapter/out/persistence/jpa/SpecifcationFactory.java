@@ -1,6 +1,6 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.domain.specification.SearchOperation;
+import br.com.morsesystems.location.shared.specification.SearchOperation;
 import com.google.common.base.Joiner;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

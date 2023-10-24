@@ -1,6 +1,6 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.domain.specification.SpecSearchCriteria;
+import br.com.morsesystems.location.shared.specification.SpecSearchCriteria;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

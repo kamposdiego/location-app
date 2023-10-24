@@ -18,8 +18,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
@@ -37,8 +35,6 @@ import static org.springframework.http.HttpStatus.*;
 public class ErrorHandlerControllerAdvice {
 
     @ExceptionHandler(value = ConversionFailedException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
     public ProblemDetail handleConversionFailedException(ConversionFailedException conversionFailedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, conversionFailedException.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
@@ -47,8 +43,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
     public ProblemDetail handleRuntimeException(RuntimeException runtimeException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, runtimeException.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
@@ -57,8 +51,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
     public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException httpMessageNotReadableException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, httpMessageNotReadableException.getLocalizedMessage());
         problemDetail.setTitle("Error processing request");
@@ -68,8 +60,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = InvalidFilterParameterException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
     public ProblemDetail handleInvalidFilterParameterException(InvalidFilterParameterException invalidFilterParameterException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, invalidFilterParameterException.getLocalizedMessage());
         problemDetail.setTitle("Error on filter processing");
@@ -79,8 +69,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
     public ProblemDetail handleMissingServletRequestParameterException(MissingServletRequestParameterException missingServletRequestParameterException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, missingServletRequestParameterException.getLocalizedMessage());
         problemDetail.setTitle("Error processing request");
@@ -90,15 +78,11 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = NotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    @ResponseBody
     public ProblemDetail handleNotFoundException(NotFoundException notFoundException){
         return ProblemDetail.forStatusAndDetail(NOT_FOUND, notFoundException.getMessage());
     }
 
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
-    @ResponseStatus(NOT_FOUND)
-    @ResponseBody
     public ProblemDetail handleEmptyResultDataAccessException(EmptyResultDataAccessException emptyResultDataAccessException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(NOT_FOUND, emptyResultDataAccessException.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
@@ -107,8 +91,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    @ResponseStatus(METHOD_NOT_ALLOWED)
-    @ResponseBody
     public ProblemDetail handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(METHOD_NOT_ALLOWED, httpRequestMethodNotSupportedException.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
@@ -117,8 +99,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = CountryRequestProcessedException.class)
-    @ResponseStatus(CONFLICT)
-    @ResponseBody
     public ProblemDetail handleCountryRequestProcessedException(CountryRequestProcessedException countryRequestProcessedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(CONFLICT, countryRequestProcessedException.getLocalizedMessage());
         problemDetail.setTitle("Country request has already been processed");
@@ -128,8 +108,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = BrazilianStateRequestProcessedException.class)
-    @ResponseStatus(CONFLICT)
-    @ResponseBody
     public ProblemDetail handleCountryRequestProcessedException(BrazilianStateRequestProcessedException brazilianStateRequestProcessedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(CONFLICT, brazilianStateRequestProcessedException.getLocalizedMessage());
         problemDetail.setTitle("Brazilian State request has already been processed");
@@ -139,8 +117,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
-    @ResponseStatus(CONFLICT)
-    @ResponseBody
     public ProblemDetail handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException){
 
         String specificMessageError = NestedExceptionUtils.getMostSpecificCause(dataIntegrityViolationException).getMessage();
@@ -160,8 +136,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    @ResponseStatus(UNPROCESSABLE_ENTITY)
-    @ResponseBody
     public ProblemDetail handleConstraintViolationException(ConstraintViolationException constraintViolationException){
         List<String> errors = new ArrayList<>();
 
@@ -177,8 +151,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-    @ResponseStatus(UNPROCESSABLE_ENTITY)
-    @ResponseBody
     public ProblemDetail handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException methodArgumentTypeMismatchException){
         String parameterName = methodArgumentTypeMismatchException.getName();
         Class<?> parameterType = methodArgumentTypeMismatchException.getRequiredType();
@@ -194,8 +166,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    @ResponseStatus(UNPROCESSABLE_ENTITY)
-    @ResponseBody
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException){
 
         BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
@@ -225,8 +195,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = RequestNotPermitted.class)
-    @ResponseStatus(TOO_MANY_REQUESTS)
-    @ResponseBody
     public ProblemDetail handleRequestNotPermitted(RequestNotPermitted requestNotPermitted){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(TOO_MANY_REQUESTS, requestNotPermitted.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
@@ -235,8 +203,6 @@ public class ErrorHandlerControllerAdvice {
     }
 
     @ExceptionHandler(value = Exception.class)
-    @ResponseStatus(INTERNAL_SERVER_ERROR)
-    @ResponseBody
     public ProblemDetail handleException(Exception exception){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, exception.getLocalizedMessage());
         problemDetail.setTitle("Error processing request");

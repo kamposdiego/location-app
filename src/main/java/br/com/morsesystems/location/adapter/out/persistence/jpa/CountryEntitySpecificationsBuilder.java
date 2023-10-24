@@ -1,7 +1,7 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.domain.specification.SearchOperation;
-import br.com.morsesystems.location.domain.specification.SpecSearchCriteria;
+import br.com.morsesystems.location.shared.specification.SearchOperation;
+import br.com.morsesystems.location.shared.specification.SpecSearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
