@@ -17,17 +17,14 @@ class UpdateBrazilianStateService implements UpdateBrazilianStateUseCase {
     private final UpdateBrazilianStatePort updateBrazilianStatePort;
 
     @Override
-    public UpdateBrazilianStateCommand updateBrazilianState(UpdateBrazilianStateCommand command) {
+    public BrazilianState updateBrazilianState(UpdateBrazilianStateCommand command) {
         log.info("The use case UpdateBrazilianStateUseCase was started.");
 
         BrazilianState brazilianState = updateBrazilianStatePort.update(command.getBrazilianState());
 
         log.info("The use case UpdateBrazilianStateUseCase was finished.");
 
-        return UpdateBrazilianStateCommand
-                .builder()
-                .brazilianState(brazilianState)
-                .build();
+        return brazilianState;
     }
 
 }

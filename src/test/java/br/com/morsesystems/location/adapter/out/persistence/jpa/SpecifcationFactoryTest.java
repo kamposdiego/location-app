@@ -1,8 +1,5 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.adapter.out.persistence.jpa.BrazilianStateEntity;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryEntity;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.SpecifcationFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -23,62 +20,62 @@ public class SpecifcationFactoryTest {
 
     @Test
     void givenCountryClassWithFilterEqual_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(CountryEntity.class, "countryName:Brasil"));
+        assertNotNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "countryName:Brasil"));
     }
 
     @Test
     void givenCountryClassWithFilterNegation_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(CountryEntity.class, "countryName!Brasil"));
+        assertNotNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "countryName!Brasil"));
     }
 
     @Test
     void givenCountryClassWithFilterGreaterThan_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(CountryEntity.class, "id>2"));
+        assertNotNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "id>2"));
     }
 
     @Test
     void givenCountryClassWithFilterLessThan_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(CountryEntity.class, "id<10"));
+        assertNotNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "id<10"));
     }
 
     @Test
     void givenCountryClassWithFilterLike_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(CountryEntity.class, "countryName~Bra"));
+        assertNotNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "countryName~Bra"));
     }
 
     @Test
     void givenCountryClassWithFilterInvalid_whenCreate_shouldReturnSpecifcation() {
-        assertNull(specifcationFactory.createSpecification(CountryEntity.class, "countryName#Bra"));
+        assertNull(specifcationFactory.createSpecification(CountryJpaEntity.class, "countryName#Bra"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterEqual_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "brazilianStateName:Alagoas"));
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName:Alagoas"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterNegation_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "brazilianStateName!Alagoas"));
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName!Alagoas"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterGreaterThan_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "id>2"));
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "id>2"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterLessThan_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "id<10"));
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "id<10"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterLike_whenCreate_shouldReturnSpecifcation() {
-        assertNotNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "brazilianStateName~Ala"));
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName~Ala"));
     }
 
     @Test
     void givenBrazilianStateClassWithFilterInvalid_whenCreate_shouldReturnSpecifcation() {
-        assertNull(specifcationFactory.createSpecification(BrazilianStateEntity.class, "brazilianStateName#Ala"));
+        assertNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName#Ala"));
     }
 
 }

@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.SaveBrazilianStateService;
 import br.com.morsesystems.location.application.exception.BrazilianStateRequestProcessedException;
 import br.com.morsesystems.location.application.port.in.SaveBrazilianStateUseCase;
 import br.com.morsesystems.location.application.port.out.BrazilianStateProcessRequestExistsByIdPort;
@@ -57,15 +56,13 @@ public class SaveBrazilianStateServiceTest {
                         .processDateTime(LocalDateTime.of(2021, 1, 1, 0, 0, 0))
                         .build());
 
-        saveBrazilianStateService.saveBrazilianState(SaveBrazilianStateUseCase.SaveBrazilianStateCommand
-                .builder()
-                .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                .brazilianState(BrazilianState
+        saveBrazilianStateService.saveBrazilianState(new SaveBrazilianStateUseCase.SaveBrazilianStateCommand(
+                BrazilianState
                         .builder()
                         .brazilianStateName("São Paulo")
                         .stateAbbreviation("SP")
-                        .build())
-                .build());
+                        .build(),  "63523793-215a-4bd7-acc6-21aacc12b197"
+        ));
 
         then(brazilianStateProcessRequestExistsByIdPort).should().existsById(anyString());
         then(saveBrazilianStatePort).should().save(any(BrazilianState.class));
@@ -77,15 +74,13 @@ public class SaveBrazilianStateServiceTest {
         given(brazilianStateProcessRequestExistsByIdPort.existsById(anyString())).willReturn(true);
 
         assertThrows(BrazilianStateRequestProcessedException.class,() ->
-                saveBrazilianStateService.saveBrazilianState(SaveBrazilianStateUseCase.SaveBrazilianStateCommand
-                        .builder()
-                        .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                        .brazilianState(BrazilianState
+                saveBrazilianStateService.saveBrazilianState(new SaveBrazilianStateUseCase.SaveBrazilianStateCommand(
+                        BrazilianState
                                 .builder()
                                 .brazilianStateName("São Paulo")
                                 .stateAbbreviation("SP")
-                                .build())
-                        .build()));
+                                .build(), "63523793-215a-4bd7-acc6-21aacc12b197"
+                )));
 
         then(brazilianStateProcessRequestExistsByIdPort).should().existsById(anyString());
         then(saveBrazilianStatePort).shouldHaveNoInteractions();

@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.UpdateCountryService;
 import br.com.morsesystems.location.application.port.out.CountrySendMessagePort;
 import br.com.morsesystems.location.application.port.out.UpdateCountryPort;
 import br.com.morsesystems.location.application.port.in.UpdateCountryUseCase;
@@ -35,15 +34,13 @@ public class UpdateCountryServiceTest {
                         .telephoneCodArea(2)
                         .build());
 
-        updateCountryLocationUseCaseImpl.updateCountry(UpdateCountryUseCase.UpdateCountryCommand
-                .builder()
-                .country(Country
+        updateCountryLocationUseCaseImpl.updateCountry(new UpdateCountryUseCase.UpdateCountryCommand(
+                Country
                         .builder()
                         .id(1L)
                         .countryName("Brazil")
                         .telephoneCodArea(55)
-                        .build())
-                .build());
+                        .build()));
 
         then(updateCountryPort).should().update(any(Country.class));
         then(countrySendMessagePort).shouldHaveNoInteractions();

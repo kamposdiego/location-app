@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @Slf4j
-class SaveCountryUseService implements SaveCountryUseCase {
+class SaveCountryService implements SaveCountryUseCase {
 
     private final SaveCountryPort saveCountryPort;
     private final CountryProcessRequestExistsByIdPort countryProcessRequestExistsByIdPort;
@@ -26,7 +26,7 @@ class SaveCountryUseService implements SaveCountryUseCase {
     private final CountrySendMessagePort countrySendMessagePort;
 
     @Override
-    public SaveCountryCommand saveCountry(SaveCountryCommand command) {
+    public Country saveCountry(SaveCountryCommand command) {
 
         if(Boolean.FALSE.equals(countryProcessRequestExistsByIdPort.existsById(command.getXIdempotencyKey()))){
 
@@ -41,10 +41,7 @@ class SaveCountryUseService implements SaveCountryUseCase {
                     .xIdempotencyKey(command.getXIdempotencyKey())
                     .build());
 
-            return SaveCountryCommand
-                    .builder()
-                    .country(country)
-                    .build();
+            return country;
         }
 
         throw new CountryRequestProcessedException(String.format("The request with x-idempotency-key %s has already been processed.", command.getXIdempotencyKey()).toString());

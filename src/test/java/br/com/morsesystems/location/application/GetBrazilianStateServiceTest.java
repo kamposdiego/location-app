@@ -1,8 +1,7 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.GetBrazilianStateService;
 import br.com.morsesystems.location.application.port.out.GetBrazilianStatePort;
-import br.com.morsesystems.location.application.port.in.GetBrazilianStateUseCase.BrazilianStateCommand;
+import br.com.morsesystems.location.application.port.in.GetBrazilianStateUseCase.GetBrazilianStateCommand;
 import br.com.morsesystems.location.domain.BrazilianState;
 import br.com.morsesystems.location.domain.Country;
 import org.junit.jupiter.api.Test;
@@ -38,12 +37,7 @@ public class GetBrazilianStateServiceTest {
                                                 .build())
                 .build());
 
-        getBrazilianStateService.getBrazilianState(BrazilianStateCommand.builder()
-                        .brazilianState(BrazilianState
-                                .builder()
-                                .id(1L)
-                                .build())
-                .build());
+        getBrazilianStateService.getBrazilianState(new GetBrazilianStateCommand(1L));
 
         then(getBrazilianStatePort).should().get(anyLong());
     }

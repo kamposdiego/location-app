@@ -27,17 +27,17 @@ class CountryProcessRequestJPAPersistenceAdapter implements CountryProcessReques
     public CountryProcessRequest save(CountryProcessRequest countryProcessRequest) {
         log.info(String.format("CountryProcessRequest with xIdempotencyKey %s is in save.", countryProcessRequest.getXIdempotencyKey()));
 
-        CountryProcessRequestEntity countryProcessRequestEntity = countryProcessRequestJpaRepository.save(CountryProcessRequestEntity
+        CountryProcessRequestJpaEntity countryProcessRequestJpaEntity = countryProcessRequestJpaRepository.save(CountryProcessRequestJpaEntity
                 .builder()
                         .xIdempotencyKey(countryProcessRequest.getXIdempotencyKey())
                         .processDateTime(LocalDateTime.now())
                 .build());
 
-        log.info(String.format("CountryProcessRequest with xIdempotencyKey %s was saved.", countryProcessRequestEntity.getXIdempotencyKey()));
+        log.info(String.format("CountryProcessRequest with xIdempotencyKey %s was saved.", countryProcessRequestJpaEntity.getXIdempotencyKey()));
 
         return CountryProcessRequest.builder()
-                .xIdempotencyKey(countryProcessRequestEntity.getXIdempotencyKey())
-                .processDateTime(countryProcessRequestEntity.getProcessDateTime())
+                .xIdempotencyKey(countryProcessRequestJpaEntity.getXIdempotencyKey())
+                .processDateTime(countryProcessRequestJpaEntity.getProcessDateTime())
                 .build();
     }
 

@@ -19,7 +19,7 @@ class DeleteBrazilianStateService implements DeleteBrazilianStateUseCase {
     public void deleteBrazilianState(DeleteBrazilianStateCommand command) {
         log.info("The use case DeleteBrazilianStateUseCase was started.");
 
-        deleteBrazilianStatePort.delete(command.getBrazilianState());
+        deleteBrazilianStatePort.delete(command.getId());
 
         log.info("The use case DeleteBrazilianStateUseCase was finished.");
     }

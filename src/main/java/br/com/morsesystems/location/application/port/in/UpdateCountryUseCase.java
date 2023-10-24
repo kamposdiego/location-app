@@ -1,21 +1,27 @@
 package br.com.morsesystems.location.application.port.in;
 
 import br.com.morsesystems.location.domain.Country;
-import lombok.Builder;
+import br.com.morsesystems.location.shared.SelfValidating;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface UpdateCountryUseCase {
 
-    UpdateCountryCommand updateCountry(UpdateCountryCommand command);
+    Country updateCountry(UpdateCountryCommand command);
 
-    @Builder
-    @RequiredArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     @Getter
-    class UpdateCountryCommand {
+    class UpdateCountryCommand extends SelfValidating<UpdateCountryCommand> {
+
+        @NotNull(message = "Country data is necessary.")
         private final Country country;
+
+        public UpdateCountryCommand(Country country){
+            this.country = country;
+            this.validateSelf();
+        }
+
     }
 
 }

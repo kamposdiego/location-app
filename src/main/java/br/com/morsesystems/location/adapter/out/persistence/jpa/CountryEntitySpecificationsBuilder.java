@@ -39,11 +39,11 @@ class CountryEntitySpecificationsBuilder {
         return this;
     }
 
-    public Specification<CountryEntity> build() {
+    public Specification<CountryJpaEntity> build() {
         if (params.size() == 0)
             return null;
 
-        Specification<CountryEntity> result = new CountryEntitySpecification(params.get(0));
+        Specification<CountryJpaEntity> result = new CountryEntitySpecification(params.get(0));
 
         for (int i = 1; i < params.size(); i++) {
             result = params.get(i).isOrPredicate()

@@ -19,17 +19,14 @@ class UpdateCountryService implements UpdateCountryUseCase {
     private final CountrySendMessagePort countrySendMessagePort;
 
     @Override
-    public UpdateCountryCommand updateCountry(UpdateCountryCommand command) {
+    public Country updateCountry(UpdateCountryCommand command) {
         log.info("The use case UpdateCountryUseCase was started.");
 
         Country country = updateCountryPort.update(command.getCountry());
 
         log.info("The use case UpdateCountryUseCase was finished.");
 
-        return UpdateCountryCommand
-                .builder()
-                .country(country)
-                .build();
+        return country;
     }
 
 }

@@ -95,10 +95,7 @@ public class CountryRestControllerTest {
     @DisplayName("Should return http status 400 and country")
     void givenCountries_whenGetCountryShouldReturnCountry() throws Exception {
         when(countryGetLocation.getCountry(any(GetCountryUseCase.GetCountryCommand.class))).thenReturn(
-                GetCountryUseCase.GetCountryCommand
-                        .builder()
-                        .country(new Country(1L, "Brazil", 55))
-                        .build());
+                new Country(1L, "Brazil", 55));
 
         mockMvc.perform(get("/countries/1"))
                 .andExpect(status().isOk());
@@ -135,12 +132,7 @@ public class CountryRestControllerTest {
     @Test
     @DisplayName("Should return http status 201 when save a country")
     void givenCountries_whenSaveShouldSaveCountry() throws Exception {
-        when(saveCountry.saveCountry(any(SaveCountryUseCase.SaveCountryCommand.class))).thenReturn(
-                SaveCountryUseCase.SaveCountryCommand
-                        .builder()
-                        .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                        .country(new Country(1L, "Brazil", 55))
-                        .build());
+        when(saveCountry.saveCountry(any(SaveCountryUseCase.SaveCountryCommand.class))).thenReturn(new Country(1L, "Brazil", 55));
 
         mockMvc.perform(post("/countries")
                 .header("X-Idempotency-Key", "63523793-215a-4bd7-acc6-21aacc12b197")
@@ -178,10 +170,7 @@ public class CountryRestControllerTest {
     @DisplayName("Should update a country")
     void givenCountries_whenUpdateCountryShouldUpdateCountry() throws Exception {
         when(updateCountryUseCase.updateCountry(any(UpdateCountryUseCase.UpdateCountryCommand.class))).thenReturn(
-                UpdateCountryUseCase.UpdateCountryCommand
-                        .builder()
-                        .country(new Country(1L, "Brazil", 55))
-                        .build());
+                new Country(1L, "Brazil", 55));
 
         mockMvc.perform(put("/countries")
                 .contentType("application/json")

@@ -1,9 +1,6 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +11,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "brazilian_states_process", schema = "public")
+@Table(name = "country_process", schema = "public")
 @DynamicUpdate
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class BrazilianStateProcessRequestEntity implements Serializable {
+class CountryProcessRequestJpaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

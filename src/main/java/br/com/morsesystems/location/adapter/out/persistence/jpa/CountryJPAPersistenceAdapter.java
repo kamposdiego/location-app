@@ -29,12 +29,12 @@ class CountryJPAPersistenceAdapter implements GetCountryPort, SaveCountryPort, U
     private final SpecifcationFactory specifcationFactory;
     private final ModelMapper modelMapper;
 
-    private CountryEntity convertToEntity(Country Country) {
-        return modelMapper.map(Country, CountryEntity.class);
+    private CountryJpaEntity convertToEntity(Country Country) {
+        return modelMapper.map(Country, CountryJpaEntity.class);
     }
 
-    private Country convertToDto(CountryEntity countryEntity) {
-        return modelMapper.map(countryEntity, Country.class);
+    private Country convertToDto(CountryJpaEntity countryJpaEntity) {
+        return modelMapper.map(countryJpaEntity, Country.class);
     }
 
     @Override
@@ -51,8 +51,8 @@ class CountryJPAPersistenceAdapter implements GetCountryPort, SaveCountryPort, U
         try {
             log.info(String.format("Search by countries was performed."));
 
-            Page<CountryEntity> countries = countryJpaRepository.findAll(specifcationFactory
-                    .createSpecification(CountryEntity.class, filter), pageable);
+            Page<CountryJpaEntity> countries = countryJpaRepository.findAll(specifcationFactory
+                    .createSpecification(CountryJpaEntity.class, filter), pageable);
 
             List<Country> countriesConverted = countries.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
 
@@ -71,7 +71,7 @@ class CountryJPAPersistenceAdapter implements GetCountryPort, SaveCountryPort, U
                 country.getCountryName(),
                 country.getTelephoneCodArea()));
 
-        CountryEntity value = countryJpaRepository.save(this.convertToEntity(country));
+        CountryJpaEntity value = countryJpaRepository.save(this.convertToEntity(country));
 
         log.info(String.format("Country is saved with name %s and DDI %s, the ID is %s.",
                 value.getCountryName(),
@@ -89,7 +89,7 @@ class CountryJPAPersistenceAdapter implements GetCountryPort, SaveCountryPort, U
 
         countryJpaRepository.findById(country.getId()).orElseThrow(() -> new NotFoundException("Country not found."));
 
-        CountryEntity value = countryJpaRepository.save(this.convertToEntity(country));
+        CountryJpaEntity value = countryJpaRepository.save(this.convertToEntity(country));
 
         log.info(String.format("Country is saved with name %s and DDI %s, the ID is %s.",
                 value.getCountryName(),
@@ -100,14 +100,14 @@ class CountryJPAPersistenceAdapter implements GetCountryPort, SaveCountryPort, U
 
 
     @Override
-    public void delete(Country country) {
-        log.info(String.format("Country with id %s will be deleted.", country.getId()));
+    public void delete(Long countryId) {
+        log.info(String.format("Country with id %s will be deleted.", countryId));
 
-        countryJpaRepository.findById(country.getId()).orElseThrow(() -> new NotFoundException("Country not found."));
+        countryJpaRepository.findById(countryId).orElseThrow(() -> new NotFoundException("Country not found."));
 
-        countryJpaRepository.deleteById(country.getId());
+        countryJpaRepository.deleteById(countryId);
 
-        log.info(String.format("Country with id %s was deleted.", country.getId()));
+        log.info(String.format("Country with id %s was deleted.", countryId));
     }
 
 }

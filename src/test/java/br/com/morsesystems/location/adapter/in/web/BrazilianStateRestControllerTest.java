@@ -105,16 +105,12 @@ public class BrazilianStateRestControllerTest {
     @Test
     @DisplayName("Should return HTTP status 200 and a Brazilian state")
     void givenBrazilianStates_whenGetBrazilianState_thenReturnHttpStatus200AndBrazilianState() throws Exception {
-        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.BrazilianStateCommand.class))).willReturn(
-                GetBrazilianStateUseCase.BrazilianStateCommand
-                        .builder()
-                        .brazilianState(BrazilianState.builder().id(1L).brazilianStateName("São Paulo").brazilianStateIBGECod(35).stateAbbreviation("SP")
-                                .country(Country.builder().id(1L)
-                                        .countryName("Brazil")
-                                        .telephoneCodArea(55)
-                                        .build())
-                                .build())
-                        .build());
+        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.GetBrazilianStateCommand.class))).willReturn(BrazilianState.builder().id(1L).brazilianStateName("São Paulo").brazilianStateIBGECod(35).stateAbbreviation("SP")
+                .country(Country.builder().id(1L)
+                        .countryName("Brazil")
+                        .telephoneCodArea(55)
+                        .build())
+                .build());
 
         mockMvc.perform(get("/brazilianstates/1"))
                 .andExpect(status().isOk());
@@ -123,7 +119,7 @@ public class BrazilianStateRestControllerTest {
     @Test
     @DisplayName("Should return HTTP status 400 when RuntimeException was thrown")
     void givenBrazilianState_whenGetBrazilianStateThrowRuntimeException_thenReturnHttpStatus400() throws Exception {
-        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.BrazilianStateCommand.class))).willThrow(RuntimeException.class);
+        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.GetBrazilianStateCommand.class))).willThrow(RuntimeException.class);
 
         mockMvc.perform(get("/brazilianstates/1"))
                 .andExpect(status().isBadRequest());
@@ -132,7 +128,7 @@ public class BrazilianStateRestControllerTest {
     @Test
     @DisplayName("Should return HTTP status 404 when Brazilian state was not found")
     void givenBrazilianState_whenGetBrazilianStateThrowBrazilianStateNotFoundException_thenReturnHttpStatus404() throws Exception {
-        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.BrazilianStateCommand.class))).willThrow(new NotFoundException("Brazilian state not found"));
+        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.GetBrazilianStateCommand.class))).willThrow(new NotFoundException("Brazilian state not found"));
 
         mockMvc.perform(get("/brazilianstates/1"))
                 .andExpect(status().isNotFound());
@@ -141,7 +137,7 @@ public class BrazilianStateRestControllerTest {
     @Test
     @DisplayName("Should return HTTP status 429 when RequestNotPermitted exception is thrown")
     void givenBrazilianState_whenGetBrazilianStateThrowRequestNotPermittedException_thenReturnStatus429() throws Exception{
-        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.BrazilianStateCommand.class))).willThrow(RequestNotPermitted.createRequestNotPermitted(RateLimiter.ofDefaults("rateLimiterApi")));
+        given(getBrazilianStateUseCase.getBrazilianState(any(GetBrazilianStateUseCase.GetBrazilianStateCommand.class))).willThrow(RequestNotPermitted.createRequestNotPermitted(RateLimiter.ofDefaults("rateLimiterApi")));
 
         mockMvc.perform(get("/brazilianstates/1"))
                 .andExpect(status().isTooManyRequests());
@@ -150,17 +146,12 @@ public class BrazilianStateRestControllerTest {
     @Test
     @DisplayName("Should return HTTP status 201 when Brazilian state was created")
     void givenBrazilianState_whenSaveBrazilianStateCall_thenReturnStatus200AndBrazilianStateCreated() throws Exception {
-        given(saveBrazilianStateUseCase.saveBrazilianState(any(SaveBrazilianStateUseCase.SaveBrazilianStateCommand.class))).willReturn(
-                SaveBrazilianStateUseCase.SaveBrazilianStateCommand
-                        .builder()
-                        .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                        .brazilianState(BrazilianState.builder().id(1L).brazilianStateName("São Paulo").brazilianStateIBGECod(35).stateAbbreviation("SP")
-                                .country(Country.builder().id(1L)
-                                        .countryName("Brazil")
-                                        .telephoneCodArea(55)
-                                        .build())
-                                .build())
-                        .build());
+        given(saveBrazilianStateUseCase.saveBrazilianState(any(SaveBrazilianStateUseCase.SaveBrazilianStateCommand.class))).willReturn(BrazilianState.builder().id(1L).brazilianStateName("São Paulo").brazilianStateIBGECod(35).stateAbbreviation("SP")
+                .country(Country.builder().id(1L)
+                        .countryName("Brazil")
+                        .telephoneCodArea(55)
+                        .build())
+                .build());
 
         mockMvc.perform(post("/brazilianstates")
                 .header("X-Idempotency-Key", "63523793-215a-4bd7-acc6-21aacc12b197")
@@ -210,13 +201,10 @@ public class BrazilianStateRestControllerTest {
     @DisplayName("Should return HTTP status 200 when Brazilian state was updated")
     void givenBrazilianStates_whenUpdateBrazilianState_thenReturnHttpStatus200() throws Exception {
         given(updateBrazilianStateUseCase.updateBrazilianState(any(UpdateBrazilianStateUseCase.UpdateBrazilianStateCommand.class))).willReturn(
-                UpdateBrazilianStateUseCase.UpdateBrazilianStateCommand
-                        .builder()
-                        .brazilianState(BrazilianState.builder().id(1L).brazilianStateName("Rio de Janeiro").brazilianStateIBGECod(36).stateAbbreviation("RJ")
-                                .country(Country.builder().id(1L)
-                                        .countryName("Brazil")
-                                        .telephoneCodArea(55)
-                                        .build())
+                BrazilianState.builder().id(1L).brazilianStateName("Rio de Janeiro").brazilianStateIBGECod(36).stateAbbreviation("RJ")
+                        .country(Country.builder().id(1L)
+                                .countryName("Brazil")
+                                .telephoneCodArea(55)
                                 .build())
                         .build());
 

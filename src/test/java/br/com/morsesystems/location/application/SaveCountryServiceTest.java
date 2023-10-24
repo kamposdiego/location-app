@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.SaveCountryUseService;
 import br.com.morsesystems.location.application.exception.CountryRequestProcessedException;
 import br.com.morsesystems.location.application.port.out.CountryProcessRequestExistsByIdPort;
 import br.com.morsesystems.location.application.port.out.CountryProcessRequestSavePort;
@@ -24,7 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-public class SaveCountryUseServiceTest {
+public class SaveCountryServiceTest {
 
     @Mock
     private SaveCountryPort saveCountryPort;
@@ -35,7 +34,7 @@ public class SaveCountryUseServiceTest {
     @Mock
     private CountrySendMessagePort countrySendMessagePort;
     @InjectMocks
-    private SaveCountryUseService saveCountryLocationUseCaseImpl;
+    private SaveCountryService saveCountryLocationUseCaseImpl;
 
     @Test
     void givenCountries_whenSaveCountry_thenShouldSaveCountry() {
@@ -53,15 +52,8 @@ public class SaveCountryUseServiceTest {
                         .processDateTime(LocalDateTime.of(2021, 1, 1, 0, 0, 0))
                         .build());
 
-        saveCountryLocationUseCaseImpl.saveCountry(SaveCountryUseCase.SaveCountryCommand
-                .builder()
-                        .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                .country(Country
-                                .builder()
-                                .countryName("Brazil")
-                                .telephoneCodArea(55)
-                                .build())
-                .build());
+        saveCountryLocationUseCaseImpl.saveCountry(new SaveCountryUseCase.SaveCountryCommand
+                (Country.builder().build(), "63523793-215a-4bd7-acc6-21aacc12b197"));
 
         then(countryProcessRequestExistsByIdPort).should().existsById(anyString());
         then(saveCountryPort).should().save(any(Country.class));
@@ -74,15 +66,12 @@ public class SaveCountryUseServiceTest {
         given(countryProcessRequestExistsByIdPort.existsById(anyString())).willReturn(true);
 
         assertThrows(CountryRequestProcessedException.class,() ->
-                saveCountryLocationUseCaseImpl.saveCountry(SaveCountryUseCase.SaveCountryCommand
-                        .builder()
-                        .xIdempotencyKey("63523793-215a-4bd7-acc6-21aacc12b197")
-                        .country(Country
+                saveCountryLocationUseCaseImpl.saveCountry(new SaveCountryUseCase.SaveCountryCommand
+                        (Country
                                 .builder()
                                 .countryName("Brazil")
                                 .telephoneCodArea(55)
-                                .build())
-                        .build()));
+                                .build(), "63523793-215a-4bd7-acc6-21aacc12b197")));
 
         then(countryProcessRequestExistsByIdPort).should().existsById(anyString());
         then(saveCountryPort).shouldHaveNoInteractions();

@@ -22,7 +22,7 @@ class SpecifcationFactory {
 
     public <T> Specification createSpecification(Class<T> type, String filter) {
         switch (type.getSimpleName()) {
-            case "CountryEntity":
+            case "CountryJpaEntity":
                 CountryEntitySpecificationsBuilder countryEntitySpecificationsBuilder = new CountryEntitySpecificationsBuilder();
 
                 Matcher matcherCountryEntity = getMatcher(filter);
@@ -33,7 +33,7 @@ class SpecifcationFactory {
 
                 return countryEntitySpecificationsBuilder.build();
 
-            case "BrazilianStateEntity":
+            case "BrazilianStateJpaEntity":
                 BrazilianStateEntitySpecificationsBuilder brazilianStateEntitySpecificationsBuilder = new BrazilianStateEntitySpecificationsBuilder();
 
                 Matcher matcherBrazilianState = getMatcher(filter);

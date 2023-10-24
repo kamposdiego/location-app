@@ -15,18 +15,15 @@ class GetCountryService implements GetCountryUseCase {
     private final GetCountryPort getCountryPort;
 
     @Override
-    public GetCountryCommand getCountry(GetCountryCommand command) {
+    public Country getCountry(GetCountryCommand command) {
 
         log.info("The use case GetCountryUseCase was started.");
 
-        Country country = getCountryPort.get(command.getCountry().getId());
+        Country country = getCountryPort.get(command.getId());
 
         log.info("The use case GetCountryUseCase was finished.");
 
-        return GetCountryCommand
-                .builder()
-                .country(country)
-                .build();
+        return country;
     }
 
 }

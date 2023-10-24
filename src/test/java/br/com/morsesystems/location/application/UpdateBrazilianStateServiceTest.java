@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.UpdateBrazilianStateService;
 import br.com.morsesystems.location.application.port.out.UpdateBrazilianStatePort;
 import br.com.morsesystems.location.application.port.in.UpdateBrazilianStateUseCase;
 import br.com.morsesystems.location.domain.BrazilianState;
@@ -38,21 +37,18 @@ public class UpdateBrazilianStateServiceTest {
                                 .build())
                         .build());
 
-        updateBrazilianStateService.updateBrazilianState(UpdateBrazilianStateUseCase.UpdateBrazilianStateCommand
+        updateBrazilianStateService.updateBrazilianState(new UpdateBrazilianStateUseCase.UpdateBrazilianStateCommand(BrazilianState
                 .builder()
-                .brazilianState(BrazilianState
+                .id(1L)
+                .brazilianStateName("São Paulo")
+                .stateAbbreviation("SP")
+                .country(Country
                         .builder()
                         .id(1L)
-                        .brazilianStateName("São Paulo")
-                        .stateAbbreviation("SP")
-                        .country(Country
-                                .builder()
-                                .id(1L)
-                                .countryName("Brazil")
-                                .telephoneCodArea(55)
-                                .build())
+                        .countryName("Brazil")
+                        .telephoneCodArea(55)
                         .build())
-                .build());
+                .build()));
 
         then(updateBrazilianStatePort).should().update(any(BrazilianState.class));
     }

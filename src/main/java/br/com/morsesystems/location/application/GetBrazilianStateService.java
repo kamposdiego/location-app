@@ -15,18 +15,15 @@ class GetBrazilianStateService implements GetBrazilianStateUseCase {
     private final GetBrazilianStatePort getBrazilianStatePort;
 
     @Override
-    public BrazilianStateCommand getBrazilianState(BrazilianStateCommand command) {
+    public BrazilianState getBrazilianState(GetBrazilianStateCommand getBrazilianStateCommand) {
 
         log.info("The use case GetBrazilianStateUseCase was started.");
 
-        BrazilianState brazilianState = getBrazilianStatePort.get(command.getBrazilianState().getId());
+        BrazilianState brazilianState = getBrazilianStatePort.get(getBrazilianStateCommand.getId());
 
         log.info("The use case GetBrazilianStateUseCase was finished.");
 
-        return BrazilianStateCommand
-                .builder()
-                .brazilianState(brazilianState)
-                .build();
+        return brazilianState;
     }
 
 }

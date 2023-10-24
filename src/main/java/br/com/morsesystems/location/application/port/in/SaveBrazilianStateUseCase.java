@@ -1,21 +1,29 @@
 package br.com.morsesystems.location.application.port.in;
 
 import br.com.morsesystems.location.domain.BrazilianState;
-import lombok.Builder;
+import br.com.morsesystems.location.shared.SelfValidating;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface SaveBrazilianStateUseCase {
 
-    SaveBrazilianStateCommand saveBrazilianState(SaveBrazilianStateCommand command);
+    BrazilianState saveBrazilianState(SaveBrazilianStateCommand command);
 
-    @Builder
-    @RequiredArgsConstructor
+
     @EqualsAndHashCode(callSuper = false)
     @Getter
-    class SaveBrazilianStateCommand {
+    class SaveBrazilianStateCommand extends SelfValidating<SaveBrazilianStateCommand> {
+        @NotNull(message = "Brazilian state data is necessary.")
         private final BrazilianState brazilianState;
+        @NotNull(message = "X-IdempotencyKey is necessary.")
         private final String xIdempotencyKey;
+
+        public SaveBrazilianStateCommand(BrazilianState brazilianState, String xIdempotencyKey){
+            this.brazilianState = brazilianState;
+            this.xIdempotencyKey = xIdempotencyKey;
+            this.validateSelf();
+        }
+
     }
 }

@@ -1,21 +1,30 @@
 package br.com.morsesystems.location.application.port.in;
 
-import br.com.morsesystems.location.domain.BrazilianState;
-import lombok.Builder;
+import br.com.morsesystems.location.shared.SelfValidating;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface DeleteBrazilianStateUseCase {
 
-    void deleteBrazilianState(DeleteBrazilianStateUseCase.DeleteBrazilianStateCommand command);
+    void deleteBrazilianState(DeleteBrazilianStateCommand command);
 
-    @Builder
-    @RequiredArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     @Getter
-    class DeleteBrazilianStateCommand {
-        private final BrazilianState brazilianState;
+    class DeleteBrazilianStateCommand extends SelfValidating<DeleteBrazilianStateCommand> {
+
+        @NotNull(message = "Brazilian state ID is necessary to perform delete operation.")
+        @Min(value=Long.MIN_VALUE)
+        @Max(value=Long.MAX_VALUE)
+        private final Long id;
+
+        public DeleteBrazilianStateCommand(Long id){
+            this.id = id;
+            this.validateSelf();
+        }
+
     }
 
 }

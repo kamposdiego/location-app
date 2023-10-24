@@ -18,7 +18,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @NamedEntityGraph(name = "graph.BrazilianState.complete",
 		attributeNodes = @NamedAttributeNode("country"))
-class BrazilianStateEntity implements Serializable {
+class BrazilianStateJpaEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ class BrazilianStateEntity implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="country_id", referencedColumnName =  "country_id", nullable=false)
-	private CountryEntity country;
+	private CountryJpaEntity country;
 
 	@Column(name = "state_abbreviation", nullable = false)
 	private String stateAbbreviation;

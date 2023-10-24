@@ -1,22 +1,25 @@
 package br.com.morsesystems.location.application.port.in;
 
 import br.com.morsesystems.location.domain.BrazilianState;
-import br.com.morsesystems.location.domain.Country;
-import lombok.Builder;
+import br.com.morsesystems.location.shared.SelfValidating;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface UpdateBrazilianStateUseCase {
 
-    UpdateBrazilianStateCommand updateBrazilianState(UpdateBrazilianStateCommand command);
+    BrazilianState updateBrazilianState(UpdateBrazilianStateCommand command);
 
-    @Builder
-    @RequiredArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     @Getter
-    class UpdateBrazilianStateCommand {
+    class UpdateBrazilianStateCommand extends SelfValidating<UpdateBrazilianStateCommand> {
+        @NotNull(message = "Brazilian state data is necessary.")
         private final BrazilianState brazilianState;
+
+        public UpdateBrazilianStateCommand(BrazilianState brazilianState) {
+            this.brazilianState = brazilianState;
+            this.validateSelf();
+        }
     }
 
 }

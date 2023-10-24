@@ -21,7 +21,7 @@ class DeleteCountryService implements DeleteCountryUseCase {
     public void deleteCountry(DeleteCountryCommand command) {
         log.info("The use case DeleteCountryUseCase was started.");
 
-        deleteCountryPort.delete(command.getCountry());
+        deleteCountryPort.delete(command.getId());
 
         log.info("The use case DeleteCountryUseCase was finished.");
     }

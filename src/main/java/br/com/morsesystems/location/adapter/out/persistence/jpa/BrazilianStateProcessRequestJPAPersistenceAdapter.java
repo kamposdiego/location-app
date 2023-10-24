@@ -27,17 +27,17 @@ class BrazilianStateProcessRequestJPAPersistenceAdapter implements BrazilianStat
     public BrazilianStateProcessRequest save(BrazilianStateProcessRequest brazilianStateProcessRequest) {
         log.info(String.format("BrazilianStateProcessRequest with xIdempotencyKey %s is in save.", brazilianStateProcessRequest.getXIdempotencyKey()));
 
-        BrazilianStateProcessRequestEntity brazilianStateProcessRequestEntity = brazilianStateProcessRequestJpaRepository.save(BrazilianStateProcessRequestEntity
+        BrazilianStateProcessRequestJpaEntity brazilianStateProcessRequestJpaEntity = brazilianStateProcessRequestJpaRepository.save(BrazilianStateProcessRequestJpaEntity
                 .builder()
                         .xIdempotencyKey(brazilianStateProcessRequest.getXIdempotencyKey())
                         .processDateTime(LocalDateTime.now())
                 .build());
 
-        log.info(String.format("BrazilianStateProcessRequest with xIdempotencyKey %s was saved.", brazilianStateProcessRequestEntity.getXIdempotencyKey()));
+        log.info(String.format("BrazilianStateProcessRequest with xIdempotencyKey %s was saved.", brazilianStateProcessRequestJpaEntity.getXIdempotencyKey()));
 
         return BrazilianStateProcessRequest.builder()
-                .xIdempotencyKey(brazilianStateProcessRequestEntity.getXIdempotencyKey())
-                .processDateTime(brazilianStateProcessRequestEntity.getProcessDateTime())
+                .xIdempotencyKey(brazilianStateProcessRequestJpaEntity.getXIdempotencyKey())
+                .processDateTime(brazilianStateProcessRequestJpaEntity.getProcessDateTime())
                 .build();
     }
 

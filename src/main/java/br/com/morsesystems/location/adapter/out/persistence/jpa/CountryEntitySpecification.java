@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 @NoArgsConstructor
-class CountryEntitySpecification implements Specification<CountryEntity> {
+class CountryEntitySpecification implements Specification<CountryJpaEntity> {
 
     private SpecSearchCriteria criteria;
 
@@ -23,7 +23,7 @@ class CountryEntitySpecification implements Specification<CountryEntity> {
     }
 
     @Override
-    public Predicate toPredicate(final Root<CountryEntity> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) {
+    public Predicate toPredicate(final Root<CountryJpaEntity> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) {
         switch (criteria.getOperation()) {
             case EQUALITY:
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());

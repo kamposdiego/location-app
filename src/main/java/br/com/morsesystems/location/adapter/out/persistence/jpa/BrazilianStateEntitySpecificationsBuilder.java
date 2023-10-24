@@ -39,11 +39,11 @@ class BrazilianStateEntitySpecificationsBuilder {
         return this;
     }
 
-    public Specification<BrazilianStateEntity> build() {
+    public Specification<BrazilianStateJpaEntity> build() {
         if (params.size() == 0)
             return null;
 
-        Specification<BrazilianStateEntity> result = new BrazilianStateEntitySpecification(params.get(0));
+        Specification<BrazilianStateJpaEntity> result = new BrazilianStateEntitySpecification(params.get(0));
 
         for (int i = 1; i < params.size(); i++) {
             result = params.get(i).isOrPredicate()

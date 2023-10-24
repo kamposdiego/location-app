@@ -1,14 +1,11 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryJPAPersistenceAdapter;
 import br.com.morsesystems.location.application.exception.InvalidFilterParameterException;
 import br.com.morsesystems.location.application.exception.NotFoundException;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryJpaRepository;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryEntity;
 import br.com.morsesystems.location.domain.Country;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.SpecifcationFactory;
 import br.com.morsesystems.location.util.ScenarioFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +41,7 @@ public class CountryJPAPersistenceAdapterTest {
 
     @Test
     void get_whenCountryIdIsNotNull_shouldReturnCountry() {
-        given(countryJpaRepository.findById(anyLong())).willReturn(Optional.of(CountryEntity.builder()
+        given(countryJpaRepository.findById(anyLong())).willReturn(Optional.of(CountryJpaEntity.builder()
                         .id(1L)
                         .countryName("Brazil")
                         .telephoneCodArea(55)
@@ -69,7 +66,7 @@ public class CountryJPAPersistenceAdapterTest {
     @Test
     void getCountries_whenFilterIsNull_shouldReturnCountries() {
         given(specifcationFactory.createSpecification(Country.class, null)).willReturn(null);
-        given(countryJpaRepository.findAll((Specification<CountryEntity>) eq(null), any(Pageable.class)))
+        given(countryJpaRepository.findAll((Specification<CountryJpaEntity>) eq(null), any(Pageable.class)))
                 .willReturn(ScenarioFactory.COUNTRIES_ENTITY);
 
         Page<Country> countries = countryJPAPersistenceAdapter.getCountries(Pageable.unpaged(), null);
@@ -79,7 +76,7 @@ public class CountryJPAPersistenceAdapterTest {
         assertEquals("Brazil", countries.getContent().get(0).getCountryName());
         assertEquals(55, countries.getContent().get(0).getTelephoneCodArea());
 
-        then(countryJpaRepository).should(times(1)).findAll((Specification<CountryEntity>) eq(null), any(Pageable.class));
+        then(countryJpaRepository).should(times(1)).findAll((Specification<CountryJpaEntity>) eq(null), any(Pageable.class));
     }
 
     @Test
@@ -127,7 +124,7 @@ public class CountryJPAPersistenceAdapterTest {
 
     @Test
     void save_whenACountryValueIsPassed_shouldSaveNewEntity(){
-        given(countryJpaRepository.save(any(CountryEntity.class))).willReturn(ScenarioFactory.COUNTRY_ENTITY_BRAZIL);
+        given(countryJpaRepository.save(any(CountryJpaEntity.class))).willReturn(ScenarioFactory.COUNTRY_ENTITY_BRAZIL);
 
         countryJPAPersistenceAdapter.save(Country
                 .builder()
@@ -135,7 +132,7 @@ public class CountryJPAPersistenceAdapterTest {
                         .telephoneCodArea(55)
                 .build());
 
-        then(countryJpaRepository).should(times(1)).save(any(CountryEntity.class));
+        then(countryJpaRepository).should(times(1)).save(any(CountryJpaEntity.class));
     }
 
     @Test
@@ -153,7 +150,7 @@ public class CountryJPAPersistenceAdapterTest {
     @Test
     void update_whenCountryExists_shouldUpdateEntity(){
         given(countryJpaRepository.findById(anyLong())).willReturn(ScenarioFactory.OPTIONAL_COUNTRY_ENTITY_BRAZIL);
-        given(countryJpaRepository.save(any(CountryEntity.class))).willReturn(ScenarioFactory.COUNTRY_ENTITY_UNITED_STATES);
+        given(countryJpaRepository.save(any(CountryJpaEntity.class))).willReturn(ScenarioFactory.COUNTRY_ENTITY_UNITED_STATES);
 
         countryJPAPersistenceAdapter.update(Country
                 .builder()
@@ -161,16 +158,14 @@ public class CountryJPAPersistenceAdapterTest {
                 .build());
 
         then(countryJpaRepository).should(times(1)).findById(anyLong());
-        then(countryJpaRepository).should(times(1)).save(any(CountryEntity.class));
+        then(countryJpaRepository).should(times(1)).save(any(CountryJpaEntity.class));
     }
 
     @Test
     void delete_whenCountryDoesNotExists_shouldThrowNotFoundException(){
         given(countryJpaRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> countryJPAPersistenceAdapter.delete(Country.builder()
-                        .id(1L)
-                .build()));
+        assertThrows(NotFoundException.class, () -> countryJPAPersistenceAdapter.delete(1L));
         then(countryJpaRepository).should(times(1)).findById(anyLong());
         then(countryJpaRepository).should(times(0)).deleteById(anyLong());
     }
@@ -179,9 +174,7 @@ public class CountryJPAPersistenceAdapterTest {
     void delete_whenCountryExists_shouldDeleteEntity(){
         given(countryJpaRepository.findById(anyLong())).willReturn(ScenarioFactory.OPTIONAL_COUNTRY_ENTITY_BRAZIL);
 
-        countryJPAPersistenceAdapter.delete(Country.builder()
-                        .id(1L)
-                .build());
+        countryJPAPersistenceAdapter.delete(1L);
 
         then(countryJpaRepository).should(times(1)).findById(anyLong());
         then(countryJpaRepository).should(times(1)).deleteById(anyLong());

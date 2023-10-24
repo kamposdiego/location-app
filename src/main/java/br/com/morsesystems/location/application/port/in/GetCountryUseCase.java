@@ -1,21 +1,30 @@
 package br.com.morsesystems.location.application.port.in;
 
 import br.com.morsesystems.location.domain.Country;
-import lombok.Builder;
+import br.com.morsesystems.location.shared.SelfValidating;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 public interface GetCountryUseCase {
 
-    GetCountryCommand getCountry(GetCountryCommand command);
+    Country getCountry(GetCountryCommand command);
 
-    @Builder
-    @RequiredArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     @Getter
-    class GetCountryCommand {
-        private final Country country;
+    class GetCountryCommand extends SelfValidating<GetCountryCommand> {
+
+        @NotNull(message = "Country ID is necessary to perform delete operation.")
+        @Min(value=Long.MIN_VALUE)
+        @Max(value=Long.MAX_VALUE)
+        private final Long id;
+
+        public GetCountryCommand(Long id){
+            this.id = id;
+            this.validateSelf();
+        }
     }
 
 }

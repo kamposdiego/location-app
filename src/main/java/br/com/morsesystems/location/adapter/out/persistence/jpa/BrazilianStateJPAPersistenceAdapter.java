@@ -31,12 +31,12 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
     private final SpecifcationFactory specifcationFactory;
     private final ModelMapper modelMapper;
 
-    private BrazilianStateEntity convertToEntity(BrazilianState brazilianState) {
-        return modelMapper.map(brazilianState, BrazilianStateEntity.class);
+    private BrazilianStateJpaEntity convertToEntity(BrazilianState brazilianState) {
+        return modelMapper.map(brazilianState, BrazilianStateJpaEntity.class);
     }
 
-    private BrazilianState convertToDto(BrazilianStateEntity brazilianStateEntity) {
-        return modelMapper.map(brazilianStateEntity, BrazilianState.class);
+    private BrazilianState convertToDto(BrazilianStateJpaEntity brazilianStateJpaEntity) {
+        return modelMapper.map(brazilianStateJpaEntity, BrazilianState.class);
     }
 
     @Transactional(readOnly = true)
@@ -54,8 +54,8 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
         try {
             log.info(String.format("Search by brazilian states was performed."));
 
-            Page<BrazilianStateEntity> brazilianStates = brazilianStateJpaRepository.findAll(specifcationFactory
-                    .createSpecification(CountryEntity.class, filter), pageable);
+            Page<BrazilianStateJpaEntity> brazilianStates = brazilianStateJpaRepository.findAll(specifcationFactory
+                    .createSpecification(CountryJpaEntity.class, filter), pageable);
 
             List<BrazilianState> statesConverted = brazilianStates.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
 
@@ -74,7 +74,7 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
                 brazilianState.getBrazilianStateName(),
                 brazilianState.getBrazilianStateIBGECod()));
 
-        BrazilianStateEntity value = brazilianStateJpaRepository.save(this.convertToEntity(brazilianState));
+        BrazilianStateJpaEntity value = brazilianStateJpaRepository.save(this.convertToEntity(brazilianState));
 
         log.info(String.format("BrazilianState is saved with name %s and IBGE ID %s, the ID is %s.",
                 brazilianState.getBrazilianStateName(),
@@ -92,7 +92,7 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
 
         brazilianStateJpaRepository.findById(brazilianState.getId()).orElseThrow(() -> new NotFoundException("BrazilianState not found."));
 
-        BrazilianStateEntity value = brazilianStateJpaRepository.save(this.convertToEntity(brazilianState));
+        BrazilianStateJpaEntity value = brazilianStateJpaRepository.save(this.convertToEntity(brazilianState));
 
         log.info(String.format("BrazilianState is saved with name %s and IBGE ID %s, the ID is %s.",
                 brazilianState.getBrazilianStateName(),
@@ -102,14 +102,14 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
     }
 
     @Override
-    public void delete(BrazilianState brazilianState) {
-        log.info(String.format("BrazilianState with id %s will be deleted.", brazilianState.getId()));
+    public void delete(Long brazilianStateId) {
+        log.info(String.format("BrazilianState with id %s will be deleted.", brazilianStateId));
 
-        brazilianStateJpaRepository.findById(brazilianState.getId()).orElseThrow(() -> new NotFoundException("BrazilianState not found."));
+        brazilianStateJpaRepository.findById(brazilianStateId).orElseThrow(() -> new NotFoundException("BrazilianState not found."));
 
-        brazilianStateJpaRepository.deleteById(brazilianState.getId());
+        brazilianStateJpaRepository.deleteById(brazilianStateId);
 
-        log.info(String.format("BrazilianState with id %s was deleted.", brazilianState.getId()));
+        log.info(String.format("BrazilianState with id %s was deleted.", brazilianStateId));
     }
 
 }

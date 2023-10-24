@@ -1,8 +1,5 @@
 package br.com.morsesystems.location.adapter.out.persistence.jpa;
 
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryProcessRequestJPAPersistenceAdapter;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryProcessRequestJpaRepository;
-import br.com.morsesystems.location.adapter.out.persistence.jpa.CountryProcessRequestEntity;
 import br.com.morsesystems.location.domain.CountryProcessRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +47,7 @@ public class CountryProcessRequestJPAPersistenceAdapterTest {
 
     @Test
     void givenCountryProcessRequest_whenSave_shouldReturnCountryProcessRequest() {
-        given(countryProcessRequestJpaRepository.save(any(CountryProcessRequestEntity.class))).willReturn(CountryProcessRequestEntity
+        given(countryProcessRequestJpaRepository.save(any(CountryProcessRequestJpaEntity.class))).willReturn(CountryProcessRequestJpaEntity
                 .builder().build());
 
         countryProcessRequestJPAPersistenceAdapter.save(CountryProcessRequest

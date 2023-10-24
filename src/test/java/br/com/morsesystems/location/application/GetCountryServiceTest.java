@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.application;
 
-import br.com.morsesystems.location.application.GetCountryService;
 import br.com.morsesystems.location.application.port.out.GetCountryPort;
 import br.com.morsesystems.location.application.port.in.GetCountryUseCase;
 import br.com.morsesystems.location.domain.Country;
@@ -31,12 +30,7 @@ public class GetCountryServiceTest {
                         .telephoneCodArea(55)
                 .build());
 
-        getCountryLocationUseCaseImpl.getCountry(GetCountryUseCase.GetCountryCommand.builder()
-                        .country(Country
-                                .builder()
-                                .id(1L)
-                                .build())
-                .build());
+        getCountryLocationUseCaseImpl.getCountry(new GetCountryUseCase.GetCountryCommand(1L));
 
         then(getCountryPort).should().get(anyLong());
     }

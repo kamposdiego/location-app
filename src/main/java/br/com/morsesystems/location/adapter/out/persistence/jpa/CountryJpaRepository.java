@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface CountryJpaRepository extends JpaRepository<CountryEntity, Long>, JpaSpecificationExecutor<CountryEntity> {
+interface CountryJpaRepository extends JpaRepository<CountryJpaEntity, Long>, JpaSpecificationExecutor<CountryJpaEntity> {
 
 }

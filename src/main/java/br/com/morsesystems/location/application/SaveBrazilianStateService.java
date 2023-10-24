@@ -23,7 +23,7 @@ class SaveBrazilianStateService implements SaveBrazilianStateUseCase {
     private final BrazilianStateProcessRequestSavePort brazilianStateProcessRequestSavePort;
 
     @Override
-    public SaveBrazilianStateCommand saveBrazilianState(SaveBrazilianStateCommand command) {
+    public BrazilianState saveBrazilianState(SaveBrazilianStateCommand command) {
 
         if(Boolean.FALSE.equals(brazilianStateProcessRequestExistsByIdPort.existsById(command.getXIdempotencyKey()))){
 
@@ -38,7 +38,7 @@ class SaveBrazilianStateService implements SaveBrazilianStateUseCase {
                     .xIdempotencyKey(command.getXIdempotencyKey())
                     .build());
 
-            return SaveBrazilianStateCommand.builder().brazilianState(brazilianState).build();
+            return brazilianState;
         }
 
         throw new BrazilianStateRequestProcessedException(String.format("The request with x-idempotency-key %s has already been processed.", command.getXIdempotencyKey()).toString());
