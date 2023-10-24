@@ -8,6 +8,7 @@ import br.com.morsesystems.location.application.port.out.CountrySendMessagePort;
 import br.com.morsesystems.location.application.port.in.SaveCountryUseCase;
 import br.com.morsesystems.location.domain.Country;
 import br.com.morsesystems.location.domain.CountryProcessRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,17 @@ public class SaveCountryServiceTest {
     private CountrySendMessagePort countrySendMessagePort;
     @InjectMocks
     private SaveCountryService saveCountryLocationUseCaseImpl;
+
+    @Test
+    void givenCountries_whenSaveCountryAndCountryIsNull_shouldConstraintViolationException() {
+        assertThrows(ConstraintViolationException.class, () -> saveCountryLocationUseCaseImpl.saveCountry(new SaveCountryUseCase.SaveCountryCommand
+                        (null, "63523793-215a-4bd7-acc6-21aacc12b197")));
+
+        then(countryProcessRequestExistsByIdPort).shouldHaveNoInteractions();
+        then(saveCountryPort).shouldHaveNoInteractions();
+        then(countryProcessRequestSavePort).shouldHaveNoInteractions();
+        then(countrySendMessagePort).shouldHaveNoInteractions();
+    }
 
     @Test
     void givenCountries_whenSaveCountry_thenShouldSaveCountry() {
