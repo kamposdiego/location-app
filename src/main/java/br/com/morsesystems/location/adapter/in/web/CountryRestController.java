@@ -71,7 +71,7 @@ class CountryRestController {
             value = COUNTRIES+"/{country-id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @RateLimiter(name = "rateLimiterApi")
-    public ResponseEntity<EntityModel<Country>> getCountryById(@Parameter(name = "country-id", description = "Country identifier.", required = true, in = ParameterIn.PATH) @PathVariable("country-id") Long id) {
+    public ResponseEntity<EntityModel<Country>> getCountryById(@Parameter(name = "country-id", description = "Country identifier.", required = true, in = ParameterIn.PATH) @Valid @PathVariable(value = "country-id", required = true) Long id) {
 
         Country country = countryGetLocation.getCountry(new GetCountryUseCase.GetCountryCommand(id));
 
@@ -176,7 +176,7 @@ class CountryRestController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<EntityModel<Country>> updateCountry(@RequestBody Country countryLocationEvent) {
+    public ResponseEntity<EntityModel<Country>> updateCountry(@Valid @RequestBody Country countryLocationEvent) {
 
         Country country = updateCountryUseCase.updateCountry(new UpdateCountryUseCase.UpdateCountryCommand(
                 Country.builder()
@@ -212,7 +212,7 @@ class CountryRestController {
             value = "/countries/{country-id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> deleteCountry(@Parameter(name = "country-id", description = "Country identifier.", required = true, in = ParameterIn.PATH) @PathVariable("country-id") Long id) {
+    public ResponseEntity<Void> deleteCountry(@Parameter(name = "country-id", description = "Country identifier.", required = true, in = ParameterIn.PATH) @Valid @PathVariable(value = "country-id", required = true) Long id) {
 
         deleteCountryUseCase.deleteCountry(new DeleteCountryUseCase.DeleteCountryCommand(id));
 

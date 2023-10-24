@@ -15,11 +15,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +36,22 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 public class ErrorHandlerControllerAdvice {
 
+    private static final String AN_INTERNAL_ERROR_OCCURRED_PLEASE_TRY_AGAIN_LATER = "An internal error occurred. Please try again later.";
+    private static final String TIMESTAMP = "timestamp";
+    private static final String AN_METHOD_THROW_THE_CHECKED_EXCEPTION_AND_WITH_THE_MESSAGE = "An method throw the checked exception: {} and with the message: {}";
+
+    @ExceptionHandler(value = MissingRequestHeaderException.class)
+    public ProblemDetail handleMissingRequestHeaderException(MissingRequestHeaderException missingRequestHeaderException){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, missingRequestHeaderException.getMessage());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
+
+        return problemDetail;
+    }
+
     @ExceptionHandler(value = ConversionFailedException.class)
     public ProblemDetail handleConversionFailedException(ConversionFailedException conversionFailedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, conversionFailedException.getMessage());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -45,7 +59,7 @@ public class ErrorHandlerControllerAdvice {
     @ExceptionHandler(value = RuntimeException.class)
     public ProblemDetail handleRuntimeException(RuntimeException runtimeException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, runtimeException.getMessage());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -54,7 +68,7 @@ public class ErrorHandlerControllerAdvice {
     public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException httpMessageNotReadableException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, httpMessageNotReadableException.getLocalizedMessage());
         problemDetail.setTitle("Error processing request");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -63,7 +77,7 @@ public class ErrorHandlerControllerAdvice {
     public ProblemDetail handleInvalidFilterParameterException(InvalidFilterParameterException invalidFilterParameterException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, invalidFilterParameterException.getLocalizedMessage());
         problemDetail.setTitle("Error on filter processing");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -72,7 +86,7 @@ public class ErrorHandlerControllerAdvice {
     public ProblemDetail handleMissingServletRequestParameterException(MissingServletRequestParameterException missingServletRequestParameterException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, missingServletRequestParameterException.getLocalizedMessage());
         problemDetail.setTitle("Error processing request");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -85,7 +99,7 @@ public class ErrorHandlerControllerAdvice {
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
     public ProblemDetail handleEmptyResultDataAccessException(EmptyResultDataAccessException emptyResultDataAccessException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(NOT_FOUND, emptyResultDataAccessException.getMessage());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -93,7 +107,7 @@ public class ErrorHandlerControllerAdvice {
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ProblemDetail handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(METHOD_NOT_ALLOWED, httpRequestMethodNotSupportedException.getMessage());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -102,7 +116,7 @@ public class ErrorHandlerControllerAdvice {
     public ProblemDetail handleCountryRequestProcessedException(CountryRequestProcessedException countryRequestProcessedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(CONFLICT, countryRequestProcessedException.getLocalizedMessage());
         problemDetail.setTitle("Country request has already been processed");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -111,7 +125,7 @@ public class ErrorHandlerControllerAdvice {
     public ProblemDetail handleCountryRequestProcessedException(BrazilianStateRequestProcessedException brazilianStateRequestProcessedException){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(CONFLICT, brazilianStateRequestProcessedException.getLocalizedMessage());
         problemDetail.setTitle("Brazilian State request has already been processed");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -130,7 +144,7 @@ public class ErrorHandlerControllerAdvice {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(CONFLICT, specificMessageError);
         problemDetail.setTitle("Data integrity violation");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -145,7 +159,7 @@ public class ErrorHandlerControllerAdvice {
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(UNPROCESSABLE_ENTITY);
         problemDetail.setDetail(errors.toString());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -160,7 +174,7 @@ public class ErrorHandlerControllerAdvice {
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(UNPROCESSABLE_ENTITY);
         problemDetail.setDetail(Arrays.asList(parameterName).toString());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -189,7 +203,7 @@ public class ErrorHandlerControllerAdvice {
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(UNPROCESSABLE_ENTITY);
         problemDetail.setDetail(allErrors.toString());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
 
         return problemDetail;
     }
@@ -197,16 +211,26 @@ public class ErrorHandlerControllerAdvice {
     @ExceptionHandler(value = RequestNotPermitted.class)
     public ProblemDetail handleRequestNotPermitted(RequestNotPermitted requestNotPermitted){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(TOO_MANY_REQUESTS, requestNotPermitted.getMessage());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(value = UndeclaredThrowableException.class)
+    public ProblemDetail handleUndeclaredThrowableException(UndeclaredThrowableException undeclaredThrowableException){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, AN_INTERNAL_ERROR_OCCURRED_PLEASE_TRY_AGAIN_LATER);
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
+        log.error(AN_METHOD_THROW_THE_CHECKED_EXCEPTION_AND_WITH_THE_MESSAGE, undeclaredThrowableException.getCause().getClass(), undeclaredThrowableException.getCause().getMessage());
 
         return problemDetail;
     }
 
     @ExceptionHandler(value = Exception.class)
     public ProblemDetail handleException(Exception exception){
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, exception.getLocalizedMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, AN_INTERNAL_ERROR_OCCURRED_PLEASE_TRY_AGAIN_LATER);
         problemDetail.setTitle("Error processing request");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty(TIMESTAMP, Instant.now());
+        log.error(AN_METHOD_THROW_THE_CHECKED_EXCEPTION_AND_WITH_THE_MESSAGE, exception.getClass(), exception.getMessage());
 
         return problemDetail;
     }

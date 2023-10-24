@@ -71,7 +71,7 @@ class BrazilianStateRestController {
     @RequestMapping(method = RequestMethod.GET,
             value = BRAZILIAN_STATES+"/{brazilian-state-id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<EntityModel<BrazilianState>> getBrazilianStateById(@Parameter(name = "brazilian-state-id", description = "Brazilian state identifier.", required = true, in = ParameterIn.PATH) @PathVariable("brazilian-state-id") Long id) {
+    public ResponseEntity<EntityModel<BrazilianState>> getBrazilianStateById(@Parameter(name = "brazilian-state-id", description = "Brazilian state identifier.", required = true, in = ParameterIn.PATH) @Valid @PathVariable(value = "brazilian-state-id", required = true) Long id) {
         BrazilianState brazilianState = getBrazilianStateUseCase
                 .getBrazilianState(new GetBrazilianStateUseCase.GetBrazilianStateCommand(id));
 
@@ -176,7 +176,7 @@ class BrazilianStateRestController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<EntityModel<BrazilianState>> updateBrazilianState(@RequestBody BrazilianState brazilianState) {
+    public ResponseEntity<EntityModel<BrazilianState>> updateBrazilianState(@Valid @RequestBody BrazilianState brazilianState) {
 
         BrazilianState state = updateBrazilianStateUseCase.updateBrazilianState(new UpdateBrazilianStateUseCase.UpdateBrazilianStateCommand(brazilianState));
 
@@ -206,7 +206,7 @@ class BrazilianStateRestController {
             value = BRAZILIAN_STATES+"/{brazilian-state-id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> deleteCountry(@Parameter(name = "brazilian-state-id", description = "Brazilian state identifier.", required = true, in = ParameterIn.PATH) @PathVariable("brazilian-state-id") Long id) {
+    public ResponseEntity<Void> deleteCountry(@Parameter(name = "brazilian-state-id", description = "Brazilian state identifier.", required = true, in = ParameterIn.PATH) @Valid @PathVariable(value = "brazilian-state-id", required = true) Long id) {
 
         deleteBrazilianStateUseCase.deleteBrazilianState(new DeleteBrazilianStateUseCase
                 .DeleteBrazilianStateCommand(id));
