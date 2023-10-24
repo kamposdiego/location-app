@@ -1,6 +1,5 @@
 package br.com.morsesystems.location.shared;
 
-
 import jakarta.validation.*;
 
 import java.util.Set;
