@@ -44,8 +44,8 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
     public BrazilianState get(Long brazilianStateId) {
         log.info(String.format("BrazilianState with id %s is in search.", brazilianStateId));
 
-        return this.convertToDto(Optional.of(brazilianStateJpaRepository
-                .getReferenceById(brazilianStateId)).orElseThrow(() -> new NotFoundException("BrazilianState not found.")));
+        return this.convertToDto(brazilianStateJpaRepository
+                .findById(brazilianStateId).orElseThrow(() -> new NotFoundException("BrazilianState not found.")));
     }
 
     @Transactional(readOnly = true)
@@ -55,7 +55,7 @@ class BrazilianStateJPAPersistenceAdapter implements GetBrazilianStatePort, Save
             log.info(String.format("Search by brazilian states was performed."));
 
             Page<BrazilianStateJpaEntity> brazilianStates = brazilianStateJpaRepository.findAll(specifcationFactory
-                    .createSpecification(CountryJpaEntity.class, filter), pageable);
+                    .createSpecification(BrazilianStateJpaEntity.class, filter), pageable);
 
             List<BrazilianState> statesConverted = brazilianStates.getContent().stream().map(this::convertToDto).collect(Collectors.toList());
 

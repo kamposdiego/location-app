@@ -74,6 +74,21 @@ public class SpecifcationFactoryTest {
     }
 
     @Test
+    void givenBrazilianStateClassWithFilterStartWith_whenCreate_shouldReturnSpecifcation() {
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName:*ala"));
+    }
+
+    @Test
+    void givenBrazilianStateClassWithFilterEndsWith_whenCreate_shouldReturnSpecifcation() {
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName:ala*"));
+    }
+
+    @Test
+    void givenBrazilianStateClassWithFilterContains_whenCreate_shouldReturnSpecifcation() {
+        assertNotNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName:*ala*"));
+    }
+
+    @Test
     void givenBrazilianStateClassWithFilterInvalid_whenCreate_shouldReturnSpecifcation() {
         assertNull(specifcationFactory.createSpecification(BrazilianStateJpaEntity.class, "brazilianStateName#Ala"));
     }
